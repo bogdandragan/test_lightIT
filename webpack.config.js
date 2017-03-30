@@ -5,13 +5,24 @@ module.exports = {
         loaders: [
             {
                 test: /\.js?$/,
-                exclude: /node_modules/,
-                loader: 'babel-loader'
+                loader: 'babel-loader',
+                exclude: /node_modules/
             },
             {
                 test: /\.html$/,
                 loader: 'raw-loader',
                 exclude: /node_modules/
+            },{
+                test: /\.css$/,
+                loader: 'style-loader'
+            },
+            {
+                test: /\.css$/,
+                loader: 'css-loader'
+            },
+            {
+                test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)|\.svg($|\?)/,
+                loader: 'url-loader'
             }
         ]
     },

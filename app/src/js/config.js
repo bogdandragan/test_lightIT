@@ -11,6 +11,11 @@ module.exports = function(app){
                 template: require('./home.html'),
                 controller: 'homeCtrl'
             })
+            .state('product',{
+                url: '/product/:id',
+                template: require('./product.html'),
+                controller: 'productCtrl'
+            })
             .state('login', {
                 url: '/login',
                 template: require('./login.html'),

@@ -1,5 +1,6 @@
 const angular = require('angular');
 const uirouter = require('angular-ui-router');
+const localStorage = require('angular-local-storage');
 
 global.jQuery = require('jquery');
 require('bootstrap');
@@ -7,9 +8,9 @@ require('bootstrap/dist/css/bootstrap.css');
 require('./styles/font-awesome/css/font-awesome.min.css');
 
 
-const app = angular.module('app',[uirouter]);
+const app = angular.module('app',[uirouter, localStorage]);
 
+require('./services').default(app);
 require('./config')(app);
-require('./controllers/homeCtrl').default(app);
-require('./controllers/loginCtrl').default(app);
-require('./controllers/registerCtrl').default(app);
+require('./controllers').default(app);
+

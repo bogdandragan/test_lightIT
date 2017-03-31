@@ -21,7 +21,7 @@ module.exports = {
                 loader: 'css-loader'
             },
             {
-                test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)|\.svg($|\?)/,
+                test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)|\.svg($|\?)|\.jpg($|\?)|\.png($|\?)|\.ico($|\?)/,
                 loader: 'url-loader'
             }
         ]

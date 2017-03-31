@@ -1,12 +1,31 @@
 <div class="register">
     <div class="container">
         <h2>Register here</h2>
-        <div class="login-form-block">
-            <form action="#" method="post">
-                <input type="email" placeholder="Email Address" required=" " >
-                <input type="password" placeholder="Password" required=" " >
-                <input type="password" placeholder="Password Confirmation" required=" " >
+        <div class="form-block">
+            <form name="registerForm" ng-submit="submitRegisterForm(registerForm.$valid)" novalidate>
+                <input type="text" name="username" ng-model="registerData.username" placeholder="Username" required ng-minlength="6">
+                <div class="input-error" ng-messages="registerForm.username.$error" role="alert" ng-if="registerForm.$submitted">
+                    <p ng-message="required">Username is required.</p>
+                    <p ng-message="minlength">Username must have at least 6 characters.</p>
+                </div>
+
+                <input type="password" name="password" ng-model="registerData.password" placeholder="Password" required ng-minlength="6">
+                <div class="input-error" ng-messages="registerForm.password.$error" role="alert" ng-if="registerForm.$submitted">
+                    <p ng-message="required">Password is required.</p>
+                    <p ng-message="minlength">Password must have at least 6 characters.</p>
+                </div>
+
+                <input type="password" name="password_confirm" ng-model="registerData.password_confirm" placeholder="Password" required pattern="{{registerData.password}}">
+                <div class="input-error" ng-messages="registerForm.password_confirm.$error" role="alert" ng-if="registerForm.$submitted">
+                    <p ng-message="pattern">Password doesn't match confirmation password.</p>
+                    <p ng-message="required">Confirmation password is required.</p>
+                </div>
+
                 <input type="submit" value="Register">
+
+                <div class="form-submit-error" ng-show="isRegisterError">
+                    <p>{{registerErrorText}}</p>
+                </div>
             </form>
 
         </div>

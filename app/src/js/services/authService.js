@@ -1,7 +1,7 @@
-AuthService.$inject = ['$http', 'localStorageService','$q'];
+AuthService.$inject = ['$http', 'localStorageService','$q', 'appConfig'];
 
-function AuthService($http, localStorageService, $q) {
-    const apiUrl = 'http://smktesting.herokuapp.com/api/';
+function AuthService($http, localStorageService, $q, appConfig) {
+    const apiUrl = appConfig.apiUrl;
     let authServiceFactory = {};
 
     let authStatus = {
@@ -12,32 +12,44 @@ function AuthService($http, localStorageService, $q) {
     let register = function (registration) {
 
         logOut();
+        let deferred = $q.defer();
 
-        return $http.post(apiUrl + 'register', registration).then(function (response) {
-            return response;
+        $http.post(apiUrl + 'register/', registration).then((response) => {
+            if(!response.data.success){
+                return deferred.reject(response.data.message);
+            }
+            localStorageService.set('authData', { token: response.data.token, username: registration.username });
+
+            authStatus.isAuth = true;
+            authStatus.username = registration.username;
+
+            return deferred.resolve(response);
+        }).catch((err) => {
+            logOut();
+            return deferred.reject(err.status+" : "+err.statusText);
         });
 
+        return deferred.promise;
     };
 
     let login = function (loginData) {
-
-        const data = {"username": loginData.username, "password": loginData.password};
-
         let deferred = $q.defer();
 
-        $http.post(apiUrl + 'login', data)
-            .then(function (response) {
-
-                localStorageService.set('authData', { token: response.token, username: loginData.username });
+        $http.post(apiUrl + 'login/', loginData)
+            .then((response) => {
+                if(!response.data.success){
+                    return deferred.reject(response.data.message);
+                }
+                localStorageService.set('authData', { token: response.data.token, username: loginData.username });
 
                 authStatus.isAuth = true;
                 authStatus.username = loginData.username;
 
-                deferred.resolve(response);
+                return deferred.resolve(response);
 
-            }).catch(function (err, status) {
+            }).catch((err) => {
                 logOut();
-                deferred.reject(err);
+                return deferred.reject(err.status+" : "+err.statusText);
             });
 
         return deferred.promise;
@@ -58,7 +70,7 @@ function AuthService($http, localStorageService, $q) {
         if (authData)
         {
             authStatus.isAuth = true;
-            authStatus.userName = authData.userName;
+            authStatus.username = authData.username;
         }
 
     }

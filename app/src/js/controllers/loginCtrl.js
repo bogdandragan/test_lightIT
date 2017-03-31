@@ -1,13 +1,26 @@
-loginCtrl.$inject = ['authService'];
+loginCtrl.$inject = ['authService', '$state', '$scope'];
 
-function loginCtrl (AuthService){
+function loginCtrl (AuthService, $state, $scope){
+    if(AuthService.authStatus.isAuth){
+        $state.go('home');
+    }
 
-    var loginData = {"username":"","password":""}
-    AuthService.login(loginData).then((response)=>{
-        console.log(response);
-    }).catch((error)=>{
-        console.log(error);
-    })
+    $scope.submitLoginForm = function(isValid){
+        if(!isValid){
+            return;
+        }
+
+        const loginData = $scope.loginData;
+
+        AuthService.login(loginData).then((response)=>{
+            console.log(response);
+            $state.go('home');
+        }).catch((error)=>{
+            $scope.isLoginError = true;
+            $scope.loginErrorText = error;
+            console.log("455454"+error);
+        })
+    }
 
 };
 

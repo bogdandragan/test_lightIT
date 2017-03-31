@@ -1,12 +1,23 @@
 <div class="login">
     <div class="container">
         <h2>Login Form</h2>
-        <div class="login-form-block">
-            <form>
-                <input type="email" placeholder="Email Address" required=" " >
-                <input type="password" placeholder="Password" required=" " >
+        <div class="form-block">
+            <form name="loginForm" ng-submit="submitLoginForm(loginForm.$valid)" novalidate>
+                <input type="text" name="username" ng-model="loginData.username" placeholder="Username" required>
+                <div class="input-error" ng-messages="loginForm.username.$error" role="alert" ng-if="loginForm.$submitted">
+                    <p ng-message="required">Username is required.</p>
+                </div>
+
+                <input type="password" name="password" ng-model="loginData.password" placeholder="Password" required>
+                <div class="input-error" ng-messages="loginForm.password.$error" role="alert" ng-if="loginForm.$submitted">
+                    <p ng-message="required">Password is required.</p>
+                </div>
 
                 <input type="submit" value="Login">
+
+                <div class="form-submit-error" ng-show="isLoginError">
+                    <p>{{loginErrorText}}</p>
+                </div>
             </form>
         </div>
     </div>
